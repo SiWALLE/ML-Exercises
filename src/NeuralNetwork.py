@@ -17,8 +17,8 @@ def sample_data(Examples_X,Examples_Y,size_percent = 0.01):
     Sampled_X = []
     Sampled_Y = []
     size = int(size_percent*len(Examples_X))
-    rand = np.random.randint(len(Examples_X)-1,size)
-    for index in rand:
+    randArray = np.random.randint(0,len(Examples_X)-1,size)
+    for index in randArray:
         Sampled_X.append(Examples_X[index])
         Sampled_Y.append(Examples_Y[index])
     return Sampled_X,Sampled_Y
