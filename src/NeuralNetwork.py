@@ -11,7 +11,19 @@ import numpy as np
 matplotlib.rcParams['figure.figsize'] = (10.0, 8.0)
 
 np.random.seed(0)
-X, y = datasets.make_moons(200, noise=0.20)
+All_Exam_X, All_Exam_Y = datasets.make_moons(500, noise=0.2)
+
+def sample_data(Examples_X,Examples_Y,size_percent = 0.01):
+    Sampled_X = []
+    Sampled_Y = []
+    size = int(size_percent*len(Examples_X))
+    rand = np.random.randint(len(Examples_X)-1,size)
+    for index in rand:
+        Sampled_X.append(Examples_X[index])
+        Sampled_Y.append(Examples_Y[index])
+    return Sampled_X,Sampled_Y
+    
+X,y = sample_data(All_Exam_X,All_Exam_Y)
 plt.scatter(X[:, 0], X[:, 1], s=40, c=y, cmap=plt.get_cmap('Spectral'))
 
 clf = linear_model.LogisticRegressionCV()
@@ -32,13 +44,12 @@ def plot_decision_boundary(pred_func):
 # plt.title("LogisticRegression")
 
 
-
 # Implementation of Neural Network Approach
 num_examples = len(X)
 nn_input_dim = 2
 nn_output_dim = 2
 
-epsilon = 0.01
+epsilon = 0.005
 reg_lambda = 0.01
 
 def calculate_loss(model):
@@ -61,7 +72,6 @@ def predict(model, x):
     exp_scores = np.exp(z2)
     probs = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
     return np.argmax(probs, axis=1)
-
 
 def build_model(nn_hdim, num_passes=20000, print_loss=False):
     np.random.seed(0)
@@ -96,12 +106,14 @@ def build_model(nn_hdim, num_passes=20000, print_loss=False):
         b2 += -epsilon * db2
 
         model = {'W1':W1, 'b1':b1, 'W2':W2, 'b2':b2}
-        #
+        plot_decision_boundary(lambda x:predict(model, x))
+        if(i % 100 ==0): 
+            plt.show()
         if(print_loss and i % 1000 == 0):
             print "Loss after iteration %i:%f" % (i, calculate_loss(model))
     return model
 
-model = build_model(8, print_loss=True)
+model = build_model(3, 100000,print_loss=True)
 plot_decision_boundary(lambda x:predict(model, x))
 plt.title("Decision Boundary for hidden layer size 3")
 plt.show()
