@@ -1,8 +1,11 @@
 import numpy as np
+import matplotlib
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
-class Classifier():
+class Classifier(object):
     
+    __name__ = 'base'
     training_set_X = []
     training_set_Y = []
     model = {}
@@ -34,6 +37,9 @@ class Classifier():
         pass
     
     def plot_decision_boundary(self):
+        print self.__name__
+        matplotlib.rcParams['figure.figsize'] = (10.0, 8.0)
+        Figure()
         if(len(self.training_set_X[0])!=2): 
             print 'Not a 2D data set'
             return 
@@ -45,4 +51,4 @@ class Classifier():
         z = z.reshape(xx.shape)
         plt.contourf(xx, yy, z, cmap=plt.get_cmap('Spectral'))
         plt.scatter(self.training_set_X[:, 0], self.training_set_X[:, 1], c=self.training_set_Y, cmap=plt.get_cmap('Spectral'))
-        plt.show()
+        plt.show(block = False)

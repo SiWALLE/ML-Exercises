@@ -6,7 +6,7 @@ class NN_Classifier(Classifier):
     hidden_dim = 1
     output_dim = 1
     reg_lambda = 0.01
-    epsilon = 0.005
+    epsilon = 0.01
     
     """
     1\  h_dim is the nodes number of hidden layers
@@ -16,6 +16,7 @@ class NN_Classifier(Classifier):
     def __init__(self,Examples_X,Examples_Y,h_dim=1,output_dim=1):
         self.training_set_X = Examples_X
         self.training_set_Y = Examples_Y
+        self.__name__ = 'Neural Network Classifier'
         self.hidden_dim = h_dim
         self.output_dim = output_dim
         input_dim = np.shape(Examples_X)[1]
@@ -45,6 +46,9 @@ class NN_Classifier(Classifier):
         W2 = self.model['W2']
         b2 = self.model['b2']
         for i in xrange(0, num_passes):
+            if( i % 200==0):
+                #decay of learning rate
+                self.epsilon  -= 0.1*self.epsilon
             X,y = self.sample_data()
             z1 = X.dot(W1) + b1
             a1 = np.tanh(z1)
