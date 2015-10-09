@@ -1,7 +1,4 @@
 import numpy as np
-import matplotlib
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
 
 class Classifier(object):
     
@@ -35,20 +32,3 @@ class Classifier(object):
     def calculate_loss(self):
         # To be implemented in subclass
         pass
-    
-    def plot_decision_boundary(self):
-        print self.__name__
-        matplotlib.rcParams['figure.figsize'] = (10.0, 8.0)
-        Figure()
-        if(len(self.training_set_X[0])!=2): 
-            print 'Not a 2D data set'
-            return 
-        x_min , x_max = self.training_set_X[:,0].min()-0.5 , self.training_set_X[:,0].max()+0.5
-        y_min , y_max = self.training_set_X[:,1].min()-0.5 , self.training_set_X[:,1].max()+0.5
-        h=0.01
-        xx,yy = np.meshgrid(np.arange(x_min,x_max,h),np.arange(y_min,y_max,h))
-        z = self.predict(np.c_[xx.ravel(),yy.ravel()])
-        z = z.reshape(xx.shape)
-        plt.contourf(xx, yy, z, cmap=plt.get_cmap('Spectral'))
-        plt.scatter(self.training_set_X[:, 0], self.training_set_X[:, 1], c=self.training_set_Y, cmap=plt.get_cmap('Spectral'))
-        plt.show(block = False)

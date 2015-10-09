@@ -1,4 +1,5 @@
 import numpy as np
+
 from Classifier import Classifier
 
 class NN_Classifier(Classifier):
@@ -40,16 +41,19 @@ class NN_Classifier(Classifier):
         data_loss += self.reg_lambda / 2 * (np.sum(np.square(W1)) + np.sum(np.square(W2)))
         return 1. / num_examples * data_loss
     
-    def train_model(self,num_passes,ifInit=False,print_loss=False):
+    def train_model(self,num_passes,ifInit=False,ifSample = True,print_loss=False):
         W1 = self.model['W1']
         b1 = self.model['b1']
         W2 = self.model['W2']
         b2 = self.model['b2']
         for i in xrange(0, num_passes):
-            if( i % 200==0):
+            if( i % 20000==0):
                 #decay of learning rate
                 self.epsilon  -= 0.1*self.epsilon
-            X,y = self.sample_data()
+            if(ifSample):
+                X,y = self.sample_data()
+            else:
+                X,y = self.training_set_X,self.training_set_Y
             z1 = X.dot(W1) + b1
             a1 = np.tanh(z1)
             z2 = a1.dot(W2) + b2
